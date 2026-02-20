@@ -1,0 +1,495 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Feel The Numbers</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bgA:#f7f5ff;
+      --bgB:#f4fffb;
+      --card: rgba(255,255,255,0.72);
+      --stroke: rgba(20, 12, 40, 0.10);
+      --text:#130b22;
+      --muted: rgba(19, 11, 34, 0.62);
+      --aura:#7c3aed;
+      --mint:#14b8a6;
+      --rose:#fb7185;
+    }
+    :root { color-scheme: light; }
+
+    body{
+      margin:0;
+      color: var(--text);
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      background:
+        radial-gradient(circle at 15% 10%, rgba(124,58,237,0.18), transparent 45%),
+        radial-gradient(circle at 85% 15%, rgba(20,184,166,0.16), transparent 45%),
+        radial-gradient(circle at 40% 95%, rgba(251,113,133,0.14), transparent 48%),
+        linear-gradient(180deg, var(--bgA), var(--bgB));
+      min-height: 100vh;
+    }
+
+    .brandFont{ font-family: Sora, Inter, system-ui, sans-serif; }
+    .soft{ color: var(--muted); }
+
+    .glass{
+      background: var(--card);
+      border: 1px solid var(--stroke);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      box-shadow: 0 14px 40px rgba(20, 12, 40, 0.08);
+    }
+
+    .btn{
+      border: 1px solid rgba(20,12,40,0.14);
+      background: rgba(255,255,255,0.72);
+      transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+    }
+    .btn:hover{
+      transform: translateY(-1px);
+      box-shadow: 0 10px 24px rgba(124,58,237,0.14);
+      background: rgba(255,255,255,0.92);
+    }
+
+    .btnPrimary{
+      border: 1px solid rgba(124,58,237,0.22);
+      background: linear-gradient(135deg, rgba(124,58,237,0.14), rgba(20,184,166,0.12));
+    }
+    .btnPrimary:hover{
+      box-shadow: 0 14px 30px rgba(124,58,237,0.18);
+    }
+
+    .field{
+      width:100%;
+      padding: 12px 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(20,12,40,0.14);
+      background: rgba(255,255,255,0.78);
+      color: var(--text);
+      outline: none;
+    }
+    .field:focus{
+      border-color: rgba(124,58,237,0.35);
+      box-shadow: 0 0 0 3px rgba(124,58,237,0.10);
+    }
+
+    details summary{
+      cursor:pointer;
+      list-style:none;
+      user-select:none;
+    }
+    details summary::-webkit-details-marker{ display:none; }
+
+    .divider{ border-top: 1px solid rgba(20,12,40,0.10); }
+
+    .stickybar{
+      position: fixed; left: 0; right: 0; bottom: 0;
+      padding: 10px 12px;
+      background: rgba(255,255,255,0.78);
+      border-top: 1px solid rgba(20,12,40,0.10);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      z-index: 50;
+      display: none;
+    }
+    @media (max-width: 768px){
+      .stickybar{ display:block; }
+      .padForSticky{ padding-bottom: 92px; }
+    }
+
+    .modalOverlay{
+      position: fixed; inset: 0; z-index: 60;
+      background: rgba(10, 6, 18, 0.50);
+      display: none; align-items: center; justify-content: center;
+      padding: 18px;
+    }
+    .modalOverlay.open{ display:flex; }
+    .modal{
+      width: min(720px, 100%);
+      border-radius: 18px;
+      background: rgba(255,255,255,0.92);
+      border: 1px solid rgba(20,12,40,0.12);
+      box-shadow: 0 18px 60px rgba(20, 12, 40, 0.18);
+      overflow: hidden;
+    }
+
+    .headlineGlow{
+      background: linear-gradient(90deg, var(--aura), var(--mint), var(--rose));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 10px 40px rgba(124,58,237,0.18);
+    }
+
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(20,12,40,0.10);
+      background: rgba(255,255,255,0.72);
+      font-size: 12px;
+      color: rgba(19, 11, 34, 0.70);
+    }
+
+    #deepsite-badge-wrapper,
+    iframe[src*="deepsite"],
+    a[href*="deepsite"]{
+      display:none !important;
+      visibility:hidden !important;
+      pointer-events:none !important;
+    }
+  </style>
+</head>
+
+<body>
+  <main class="mx-auto w-full max-w-3xl px-4 py-10 md:py-14 padForSticky">
+
+    <!-- HERO -->
+    <section class="glass rounded-3xl p-6 md:p-8 mb-6">
+      <div class="flex flex-wrap items-center gap-2 mb-4">
+        <span class="badge">🔮 Spiritual Numerology</span>
+        <span class="badge">✨ Pattern Awareness</span>
+        <span class="badge">🧠 Practical Insight</span>
+      </div>
+
+      <h1 class="brandFont text-4xl md:text-5xl font-extrabold leading-tight headlineGlow">
+        Feel The Numbers
+      </h1>
+
+      <p class="mt-3 soft text-base md:text-lg">
+        Numerology is not fortune telling. It is pattern awareness you can actually use.
+      </p>
+
+      <div class="divider my-6"></div>
+
+      <div class="flex flex-col sm:flex-row gap-3">
+        <a class="btn btnPrimary rounded-2xl px-5 py-4 font-semibold text-center" href="#calculator">
+          Start with your Life Path
+        </a>
+        <a class="btn rounded-2xl px-5 py-4 font-semibold text-center" href="#lead">
+          Get the deeper decode
+        </a>
+      </div>
+    </section>
+
+    <!-- CALCULATOR -->
+    <section id="calculator" class="glass rounded-3xl p-6 md:p-8 mb-6">
+      <h2 class="brandFont text-2xl font-bold mb-2">Life Path Calculator</h2>
+      <p class="soft mb-5">Enter your birthday. Get your Life Path. Then decide how deep you want to go.</p>
+
+      <div class="grid gap-3">
+        <label class="text-sm font-semibold">Your Birthdate</label>
+        <input id="dob" type="date" class="field" />
+        <button id="calcBtn" class="btn btnPrimary rounded-2xl py-4 font-semibold">
+          Calculate my Life Path
+        </button>
+      </div>
+
+      <div id="result" class="mt-5 hidden">
+        <div class="divider my-5"></div>
+        <div class="glass rounded-2xl p-5" style="background: rgba(255,255,255,0.65);">
+          <div class="text-sm soft">Your Life Path Number</div>
+          <div id="lpNumber" class="brandFont text-4xl font-extrabold mt-1"></div>
+          <div id="lpHint" class="soft mt-2 text-sm"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CREDIBILITY -->
+    <details class="glass rounded-3xl p-6 md:p-8 mb-6">
+      <summary class="flex items-center justify-between gap-3">
+        <div>
+          <div class="brandFont text-2xl font-bold">Why people trust this</div>
+          <div class="text-sm soft mt-1">Tap to open</div>
+        </div>
+        <div class="text-2xl select-none">⌄</div>
+      </summary>
+
+      <div class="divider my-6"></div>
+
+      <div class="space-y-5">
+        <p class="soft">
+          This wasn’t built in a vacuum. It was refined live, with real people, in real time.
+        </p>
+
+        <div class="glass rounded-2xl p-5" style="background: rgba(255,255,255,0.62);">
+          <div class="brandFont text-lg font-bold mb-3">Live Experience</div>
+
+          <div class="grid sm:grid-cols-2 gap-4 text-sm">
+            <div>
+              <div class="soft">Live Experience</div>
+              <div class="font-semibold">Hundreds of TikTok Live shows hosted</div>
+            </div>
+            <div>
+              <div class="soft">Reach</div>
+              <div class="font-semibold">100M+ views across short-form + Lives</div>
+            </div>
+            <div>
+              <div class="soft">Engagement</div>
+              <div class="font-semibold">1M+ likes from the community</div>
+            </div>
+            <div>
+              <div class="soft">Community Growth</div>
+              <div class="font-semibold">70K+ TikTok → 187K Instagram</div>
+            </div>
+          </div>
+
+          <div class="divider my-4"></div>
+
+          <div class="text-xs soft">
+            Top audience regions: United States, United Kingdom, Canada, Ireland, Nigeria, Australia
+          </div>
+          <div class="text-xs soft mt-1">
+            Numbers reflect platform totals across TikTok + Instagram content performance.
+          </div>
+        </div>
+
+        <div class="glass rounded-2xl p-5" style="background: rgba(255,255,255,0.62);">
+          <div class="brandFont text-lg font-bold mb-2">A quick personal note</div>
+
+          <p class="soft text-sm">
+            For a long time, my own path felt slightly off because most calculators reduce Master Numbers too early.
+            Once I aligned with my true Master Number purpose, things stopped feeling forced and started lining up naturally.
+          </p>
+
+          <p class="soft text-sm mt-3">
+            This calculator exists so you don’t miss that signal.
+          </p>
+
+          <div class="mt-4 text-sm font-semibold">– Hit James</div>
+        </div>
+      </div>
+    </details>
+
+    <!-- CONSULT -->
+    <details id="lead" class="glass rounded-3xl p-6 md:p-8 mb-6">
+      <summary class="flex items-center justify-between gap-3">
+        <div>
+          <div class="brandFont text-2xl font-bold">Life Path Consult</div>
+          <div class="text-sm soft mt-1">Tap to open</div>
+        </div>
+        <div class="text-2xl select-none">⌄</div>
+      </summary>
+
+      <div class="divider my-6"></div>
+
+      <p class="soft mb-5">
+        Want the full decode? I break down the patterns you keep repeating and how to flip them.
+      </p>
+
+      <a class="btn btnPrimary block rounded-2xl px-5 py-4 font-semibold text-center"
+         href="https://hitjames.setmore.com/" target="_blank" rel="noreferrer">
+        Book a session
+      </a>
+    </details>
+
+    <!-- MUSIC -->
+    <details id="music" class="glass rounded-3xl p-6 md:p-8 mb-6">
+      <summary class="flex items-center justify-between gap-3">
+        <div>
+          <div class="brandFont text-2xl font-bold">Numerology Music</div>
+          <div class="text-sm soft mt-1">Tap to open</div>
+        </div>
+        <div class="text-2xl select-none">⌄</div>
+      </summary>
+
+      <div class="divider my-6"></div>
+
+      <p class="soft mb-5">
+        Music is the fastest way to feel the message. Pick your platform.
+      </p>
+
+      <div class="grid sm:grid-cols-3 gap-3">
+        <a class="btn rounded-2xl px-4 py-4 font-semibold text-center" href="https://open.spotify.com/playlist/4nxP84zXmEryhBqOT01A3j" target="_blank" rel="noreferrer">
+          Spotify
+        </a>
+        <a class="btn rounded-2xl px-4 py-4 font-semibold text-center" href="https://music.apple.com/us/album/beginners-guide-to-the-universe-its-11-right-now-single/1854069647" target="_blank" rel="noreferrer">
+          Apple Music
+        </a>
+        <a class="btn rounded-2xl px-4 py-4 font-semibold text-center" href="https://tidal.com/album/473794673" target="_blank" rel="noreferrer">
+          Tidal
+        </a>
+      </div>
+
+      <div class="mt-4">
+        <a class="btn btnPrimary block rounded-2xl px-5 py-4 font-semibold text-center" href="https://even.biz/r/galaxies-don-t-text-back" target="_blank" rel="noreferrer">
+          Support the artist with Alignment Music
+        </a>
+      </div>
+    </details>
+
+    <!-- RESOURCES + EBOOK -->
+    <details id="resources" class="glass rounded-3xl p-6 md:p-8 mb-6">
+      <summary class="flex items-center justify-between gap-3">
+        <div>
+          <div class="brandFont text-2xl font-bold">Resources + Ebooks</div>
+          <div class="text-sm soft mt-1">Tap to open</div>
+        </div>
+        <div class="text-2xl select-none">⌄</div>
+      </summary>
+
+      <div class="divider my-6"></div>
+
+      <div class="glass rounded-2xl p-5" style="background: rgba(255,255,255,0.62);">
+        <div class="brandFont text-lg font-bold">Free Numerology Starter Pack</div>
+        <p class="soft mt-2 text-sm">
+          Drop your email and I will send the download link. No spam, just the goods.
+        </p>
+
+        <a class="btn btnPrimary mt-4 block rounded-2xl px-5 py-4 font-semibold text-center"
+           href="#ebookGate" data-open-ebook="1">
+          Get the free ebook
+        </a>
+
+        <p class="text-xs soft mt-3">
+          Pro tip: check Promotions or Spam if your inbox is acting brand new.
+        </p>
+      </div>
+    </details>
+
+    <!-- FOOTER -->
+    <section class="text-center soft text-xs mt-8">
+      © <span id="year"></span> Feel The Numbers
+    </section>
+
+    <!-- Ebook Email Gate Modal -->
+    <div id="ebookGate" class="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="ebookGateTitle">
+      <div class="modal">
+        <div class="p-5 md:p-6">
+          <div class="flex items-start justify-between gap-4">
+            <div>
+              <div id="ebookGateTitle" class="brandFont text-2xl font-extrabold">
+                Free Numerology Starter Pack
+              </div>
+              <p class="soft mt-2">
+                Drop your email and I will send the download link.
+              </p>
+            </div>
+            <button id="closeEbookGate" class="btn rounded-2xl px-3 py-2 text-sm font-semibold" type="button">
+              Close
+            </button>
+          </div>
+
+          <div class="divider my-5"></div>
+
+          <form
+            id="mcEbookForm"
+            class="space-y-4"
+            method="post"
+            target="_blank"
+            novalidate
+            action="https://gmail.us12.list-manage.com/subscribe/post?u=3bc7d3b13b035ca3f0438b285&amp;id=afeae60d1f&amp;f_id=0029e2e3f0">
+
+            <div class="grid md:grid-cols-2 gap-3">
+              <div>
+                <label class="text-sm font-semibold">Email</label>
+                <input class="field" type="email" name="EMAIL" placeholder="you@email.com" required />
+              </div>
+              <div>
+                <label class="text-sm font-semibold">Life Path / Master Number (optional)</label>
+                <input class="field" type="text" name="FNAME" placeholder="Example: 11, 22, 7..." />
+              </div>
+            </div>
+
+            <input type="hidden" name="SOURCE" value="EBOOK_STARTER_PACK" />
+            <input type="hidden" name="ASSET" value="numerology-starter-pack" />
+
+            <div aria-hidden="true" style="position:absolute; left:-5000px;">
+              <input type="text" name="b_3bc7d3b13b035ca3f0438b285_afeae60d1f" tabindex="-1" value="">
+            </div>
+
+            <button type="submit" class="btn btnPrimary rounded-2xl px-5 py-4 font-semibold w-full">
+              Send me the download link
+            </button>
+
+            <p id="mcEbookNotice" class="text-xs soft"></p>
+          </form>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Mobile sticky actions -->
+  <div class="stickybar">
+    <div class="mx-auto max-w-3xl flex gap-2">
+      <a class="btn flex-1 rounded-2xl px-4 py-3 text-center font-semibold" href="#calculator">Calculator</a>
+      <a class="btn flex-1 rounded-2xl px-4 py-3 text-center font-semibold" href="#music">Music</a>
+      <a class="btn btnPrimary flex-1 rounded-2xl px-4 py-3 text-center font-semibold" href="https://hitjames.setmore.com/" target="_blank" rel="noreferrer">Book</a>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    (function ebookGate(){
+      const overlay = document.getElementById("ebookGate");
+      const closeBtn = document.getElementById("closeEbookGate");
+      const openers = document.querySelectorAll('[data-open-ebook="1"]');
+      const form = document.getElementById("mcEbookForm");
+      const notice = document.getElementById("mcEbookNotice");
+
+      const open = () => overlay.classList.add("open");
+      const close = () => overlay.classList.remove("open");
+
+      openers.forEach(a => a.addEventListener("click", (e) => { e.preventDefault(); open(); }));
+      closeBtn.addEventListener("click", close);
+      overlay.addEventListener("click", (e) => { if (e.target === overlay) close(); });
+      document.addEventListener("keydown", (e) => { if (e.key === "Escape") close(); });
+
+      notice.textContent = "After you submit, check your email for the link. If you don’t see it, check Spam or Promotions.";
+
+    })();
+
+    (function lifePathCalc(){
+      const dob = document.getElementById("dob");
+      const btn = document.getElementById("calcBtn");
+      const box = document.getElementById("result");
+      const numEl = document.getElementById("lpNumber");
+      const hintEl = document.getElementById("lpHint");
+
+      function reduce(n){
+        while (n > 9 && n !== 11 && n !== 22 && n !== 33) {
+          n = String(n).split("").reduce((a,c)=>a+Number(c),0);
+        }
+        return n;
+      }
+
+      btn.addEventListener("click", () => {
+        if (!dob.value) {
+          alert("Pick your birthdate first.");
+          return;
+        }
+        const [y,m,d] = dob.value.split("-").map(Number);
+        const sum = String(y) + String(m) + String(d);
+        const total = sum.split("").reduce((a,c)=>a+Number(c),0);
+        const lp = reduce(total);
+
+        numEl.textContent = lp;
+        hintEl.textContent =
+          (lp === 11 || lp === 22 || lp === 33)
+          ? "Master number energy. High potential, higher responsibility."
+          : "Core life rhythm. The patterns you keep returning to.";
+
+        box.classList.remove("hidden");
+      });
+    })();
+
+    (function removeDeepSiteBadge(){
+      const el = document.getElementById("deepsite-badge-wrapper");
+      if (el) el.remove();
+    })();
+  </script>
+</body>
+</html>
