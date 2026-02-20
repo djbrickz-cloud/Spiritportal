@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -10,38 +11,48 @@
   <!-- Typography -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap"
+    rel="stylesheet">
 
   <style>
-    :root{
-      --bgA:#f7f5ff;
-      --bgB:#f4fffb;
-      --card: rgba(255,255,255,0.72);
+    :root {
+      --bgA: #f7f5ff;
+      --bgB: #f4fffb;
+      --card: rgba(255, 255, 255, 0.72);
       --stroke: rgba(20, 12, 40, 0.10);
-      --text:#130b22;
+      --text: #130b22;
       --muted: rgba(19, 11, 34, 0.62);
-      --aura:#7c3aed;
-      --mint:#14b8a6;
-      --rose:#fb7185;
+      --aura: #7c3aed;
+      --mint: #14b8a6;
+      --rose: #fb7185;
     }
-    :root { color-scheme: light; }
 
-    body{
-      margin:0;
+    :root {
+      color-scheme: light;
+    }
+
+    body {
+      margin: 0;
       color: var(--text);
       font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
       background:
-        radial-gradient(circle at 15% 10%, rgba(124,58,237,0.18), transparent 45%),
-        radial-gradient(circle at 85% 15%, rgba(20,184,166,0.16), transparent 45%),
-        radial-gradient(circle at 40% 95%, rgba(251,113,133,0.14), transparent 48%),
+        radial-gradient(circle at 15% 10%, rgba(124, 58, 237, 0.18), transparent 45%),
+        radial-gradient(circle at 85% 15%, rgba(20, 184, 166, 0.16), transparent 45%),
+        radial-gradient(circle at 40% 95%, rgba(251, 113, 133, 0.14), transparent 48%),
         linear-gradient(180deg, var(--bgA), var(--bgB));
       min-height: 100vh;
     }
 
-    .brandFont{ font-family: Sora, Inter, system-ui, sans-serif; }
-    .soft{ color: var(--muted); }
+    .brandFont {
+      font-family: Sora, Inter, system-ui, sans-serif;
+    }
 
-    .glass{
+    .soft {
+      color: var(--muted);
+    }
+
+    .glass {
       background: var(--card);
       border: 1px solid var(--stroke);
       backdrop-filter: blur(14px);
@@ -49,105 +60,135 @@
       box-shadow: 0 14px 40px rgba(20, 12, 40, 0.08);
     }
 
-    .btn{
-      border: 1px solid rgba(20,12,40,0.14);
-      background: rgba(255,255,255,0.72);
+    .btn {
+      border: 1px solid rgba(20, 12, 40, 0.14);
+      background: rgba(255, 255, 255, 0.72);
       transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
     }
-    .btn:hover{
+
+    .btn:hover {
       transform: translateY(-1px);
-      box-shadow: 0 10px 24px rgba(124,58,237,0.14);
-      background: rgba(255,255,255,0.92);
+      box-shadow: 0 10px 24px rgba(124, 58, 237, 0.14);
+      background: rgba(255, 255, 255, 0.92);
     }
 
-    .btnPrimary{
-      border: 1px solid rgba(124,58,237,0.22);
-      background: linear-gradient(135deg, rgba(124,58,237,0.14), rgba(20,184,166,0.12));
-    }
-    .btnPrimary:hover{
-      box-shadow: 0 14px 30px rgba(124,58,237,0.18);
+    .btnPrimary {
+      border: 1px solid rgba(124, 58, 237, 0.22);
+      background: linear-gradient(135deg, rgba(124, 58, 237, 0.14), rgba(20, 184, 166, 0.12));
     }
 
-    .field{
-      width:100%;
+    .btnPrimary:hover {
+      box-shadow: 0 14px 30px rgba(124, 58, 237, 0.18);
+    }
+
+    .field {
+      width: 100%;
       padding: 12px 14px;
       border-radius: 14px;
-      border: 1px solid rgba(20,12,40,0.14);
-      background: rgba(255,255,255,0.78);
+      border: 1px solid rgba(20, 12, 40, 0.14);
+      background: rgba(255, 255, 255, 0.78);
       color: var(--text);
       outline: none;
     }
-    .field:focus{
-      border-color: rgba(124,58,237,0.35);
-      box-shadow: 0 0 0 3px rgba(124,58,237,0.10);
+
+    .field.valid {
+      border-color: rgba(124, 58, 237, 0.5);
+      box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15);
     }
 
-    details summary{
-      cursor:pointer;
-      list-style:none;
-      user-select:none;
+    .field:focus {
+      border-color: rgba(124, 58, 237, 0.35);
+      box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.10);
     }
-    details summary::-webkit-details-marker{ display:none; }
 
-    .divider{ border-top: 1px solid rgba(20,12,40,0.10); }
+    details summary {
+      cursor: pointer;
+      list-style: none;
+      user-select: none;
+    }
 
-    .stickybar{
-      position: fixed; left: 0; right: 0; bottom: 0;
+    details summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .divider {
+      border-top: 1px solid rgba(20, 12, 40, 0.10);
+    }
+
+    .stickybar {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
       padding: 10px 12px;
-      background: rgba(255,255,255,0.78);
-      border-top: 1px solid rgba(20,12,40,0.10);
+      background: rgba(255, 255, 255, 0.78);
+      border-top: 1px solid rgba(20, 12, 40, 0.10);
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
       z-index: 50;
       display: none;
     }
-    @media (max-width: 768px){
-      .stickybar{ display:block; }
-      .padForSticky{ padding-bottom: 92px; }
+
+    @media (max-width: 768px) {
+      .stickybar {
+        display: block;
+      }
+
+      .padForSticky {
+        padding-bottom: 92px;
+      }
     }
 
-    .modalOverlay{
-      position: fixed; inset: 0; z-index: 60;
+    .modalOverlay {
+      position: fixed;
+      inset: 0;
+      z-index: 60;
       background: rgba(10, 6, 18, 0.50);
-      display: none; align-items: center; justify-content: center;
+      display: none;
+      align-items: center;
+      justify-content: center;
       padding: 18px;
     }
-    .modalOverlay.open{ display:flex; }
-    .modal{
+
+    .modalOverlay.open {
+      display: flex;
+    }
+
+    .modal {
       width: min(720px, 100%);
       border-radius: 18px;
-      background: rgba(255,255,255,0.92);
-      border: 1px solid rgba(20,12,40,0.12);
+      background: rgba(255, 255, 255, 0.92);
+      border: 1px solid rgba(20, 12, 40, 0.12);
       box-shadow: 0 18px 60px rgba(20, 12, 40, 0.18);
       overflow: hidden;
     }
 
-    .headlineGlow{
+    .headlineGlow {
       background: linear-gradient(90deg, var(--aura), var(--mint), var(--rose));
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
-      text-shadow: 0 10px 40px rgba(124,58,237,0.18);
+      text-shadow: 0 10px 40px rgba(124, 58, 237, 0.18);
     }
 
-    .badge{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
       padding: 8px 10px;
       border-radius: 999px;
-      border: 1px solid rgba(20,12,40,0.10);
-      background: rgba(255,255,255,0.72);
+      border: 1px solid rgba(20, 12, 40, 0.10);
+      background: rgba(255, 255, 255, 0.72);
       font-size: 12px;
       color: rgba(19, 11, 34, 0.70);
     }
 
     #deepsite-badge-wrapper,
     iframe[src*="deepsite"],
-    a[href*="deepsite"]{
-      display:none !important;
-      visibility:hidden !important;
-      pointer-events:none !important;
+    a[href*="deepsite"] {
+      display: none !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
     }
   </style>
 </head>
@@ -190,7 +231,12 @@
 
       <div class="grid gap-3">
         <label class="text-sm font-semibold">Your Birthdate</label>
-        <input id="dob" type="date" class="field" />
+        <input
+  id="dob"
+  type="text"
+  inputmode="numeric"
+  placeholder="MM/DD/YYYY"
+  class="field"/>
         <button id="calcBtn" class="btn btnPrimary rounded-2xl py-4 font-semibold">
           Calculate my Life Path
         </button>
@@ -260,7 +306,8 @@
 
           <p class="soft text-sm">
             For a long time, my own path felt slightly off because most calculators reduce Master Numbers too early.
-            Once I aligned with my true Master Number purpose, things stopped feeling forced and started lining up naturally.
+            Once I aligned with my true Master Number purpose, things stopped feeling forced and started lining up
+            naturally.
           </p>
 
           <p class="soft text-sm mt-3">
@@ -289,7 +336,7 @@
       </p>
 
       <a class="btn btnPrimary block rounded-2xl px-5 py-4 font-semibold text-center"
-         href="https://hitjames.setmore.com/" target="_blank" rel="noreferrer">
+        href="https://hitjames.setmore.com/" target="_blank" rel="noreferrer">
         Book a session
       </a>
     </details>
@@ -311,19 +358,24 @@
       </p>
 
       <div class="grid sm:grid-cols-3 gap-3">
-        <a class="btn rounded-2xl px-4 py-4 font-semibold text-center" href="https://open.spotify.com/playlist/4nxP84zXmEryhBqOT01A3j" target="_blank" rel="noreferrer">
+        <a class="btn rounded-2xl px-4 py-4 font-semibold text-center"
+          href="https://open.spotify.com/playlist/4nxP84zXmEryhBqOT01A3j" target="_blank" rel="noreferrer">
           Spotify
         </a>
-        <a class="btn rounded-2xl px-4 py-4 font-semibold text-center" href="https://music.apple.com/us/album/beginners-guide-to-the-universe-its-11-right-now-single/1854069647" target="_blank" rel="noreferrer">
+        <a class="btn rounded-2xl px-4 py-4 font-semibold text-center"
+          href="https://music.apple.com/us/album/beginners-guide-to-the-universe-its-11-right-now-single/1854069647"
+          target="_blank" rel="noreferrer">
           Apple Music
         </a>
-        <a class="btn rounded-2xl px-4 py-4 font-semibold text-center" href="https://tidal.com/album/473794673" target="_blank" rel="noreferrer">
+        <a class="btn rounded-2xl px-4 py-4 font-semibold text-center" href="https://tidal.com/album/473794673"
+          target="_blank" rel="noreferrer">
           Tidal
         </a>
       </div>
 
       <div class="mt-4">
-        <a class="btn btnPrimary block rounded-2xl px-5 py-4 font-semibold text-center" href="https://even.biz/r/galaxies-don-t-text-back" target="_blank" rel="noreferrer">
+        <a class="btn btnPrimary block rounded-2xl px-5 py-4 font-semibold text-center"
+          href="https://even.biz/r/galaxies-don-t-text-back" target="_blank" rel="noreferrer">
           Support the artist with Alignment Music
         </a>
       </div>
@@ -347,8 +399,8 @@
           Drop your email and I will send the download link. No spam, just the goods.
         </p>
 
-        <a class="btn btnPrimary mt-4 block rounded-2xl px-5 py-4 font-semibold text-center"
-           href="#ebookGate" data-open-ebook="1">
+        <a class="btn btnPrimary mt-4 block rounded-2xl px-5 py-4 font-semibold text-center" href="#ebookGate"
+          data-open-ebook="1">
           Get the free ebook
         </a>
 
@@ -383,12 +435,7 @@
 
           <div class="divider my-5"></div>
 
-          <form
-            id="mcEbookForm"
-            class="space-y-4"
-            method="post"
-            target="_blank"
-            novalidate
+          <form id="mcEbookForm" class="space-y-4" method="post" target="_blank" novalidate
             action="https://gmail.us12.list-manage.com/subscribe/post?u=3bc7d3b13b035ca3f0438b285&amp;id=afeae60d1f&amp;f_id=0029e2e3f0">
 
             <div class="grid md:grid-cols-2 gap-3">
@@ -426,7 +473,8 @@
     <div class="mx-auto max-w-3xl flex gap-2">
       <a class="btn flex-1 rounded-2xl px-4 py-3 text-center font-semibold" href="#calculator">Calculator</a>
       <a class="btn flex-1 rounded-2xl px-4 py-3 text-center font-semibold" href="#music">Music</a>
-      <a class="btn btnPrimary flex-1 rounded-2xl px-4 py-3 text-center font-semibold" href="https://hitjames.setmore.com/" target="_blank" rel="noreferrer">Book</a>
+      <a class="btn btnPrimary flex-1 rounded-2xl px-4 py-3 text-center font-semibold"
+        href="https://hitjames.setmore.com/" target="_blank" rel="noreferrer">Book</a>
     </div>
   </div>
 
@@ -458,6 +506,24 @@
       const box = document.getElementById("result");
       const numEl = document.getElementById("lpNumber");
       const hintEl = document.getElementById("lpHint");
+      /* Premium auto-format MM/DD/YYYY */
+dob.addEventListener("input", (e) => {
+  let v = e.target.value.replace(/\D/g,"").slice(0,8);
+
+  if (v.length >= 5)
+    v = v.slice(0,2)+"/"+v.slice(2,4)+"/"+v.slice(4);
+  else if (v.length >= 3)
+    v = v.slice(0,2)+"/"+v.slice(2);
+
+  e.target.value = v;
+
+  if (v.length === 10) {
+    dob.classList.add("valid");
+  } else {
+    dob.classList.remove("valid");
+  }
+});
+
 
       function reduce(n){
         while (n > 9 && n !== 11 && n !== 22 && n !== 33) {
@@ -467,23 +533,29 @@
       }
 
       btn.addEventListener("click", () => {
-        if (!dob.value) {
-          alert("Pick your birthdate first.");
-          return;
-        }
-        const [y,m,d] = dob.value.split("-").map(Number);
-        const sum = String(y) + String(m) + String(d);
-        const total = sum.split("").reduce((a,c)=>a+Number(c),0);
-        const lp = reduce(total);
+        const cleaned = dob.value.replace(/\D/g,"");
 
-        numEl.textContent = lp;
-        hintEl.textContent =
-          (lp === 11 || lp === 22 || lp === 33)
-          ? "Master number energy. High potential, higher responsibility."
-          : "Core life rhythm. The patterns you keep returning to.";
+  if (cleaned.length !== 8) {
+    alert("Use format MM/DD/YYYY");
+    return;
+  }
 
-        box.classList.remove("hidden");
-      });
+  const m = cleaned.substring(0,2);
+  const d = cleaned.substring(2,4);
+  const y = cleaned.substring(4,8);
+
+  const sum = (m + d + y).split("").reduce((a,c)=>a+Number(c),0);
+  const lp = reduce(sum);
+
+  numEl.textContent = lp;
+
+  hintEl.textContent =
+    (lp === 11 || lp === 22 || lp === 33)
+    ? "Master number energy. High potential, higher responsibility."
+    : "Core life rhythm. The patterns you keep returning to.";
+
+  box.classList.remove("hidden");
+});
     })();
 
     (function removeDeepSiteBadge(){
@@ -492,4 +564,5 @@
     })();
   </script>
 </body>
+
 </html>
