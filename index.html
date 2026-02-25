@@ -242,14 +242,47 @@
         </button>
       </div>
 
-      <div id="result" class="mt-5 hidden">
-        <div class="divider my-5"></div>
-        <div class="glass rounded-2xl p-5" style="background: rgba(255,255,255,0.65);">
-          <div class="text-sm soft">Your Life Path Number</div>
-          <div id="lpNumber" class="brandFont text-4xl font-extrabold mt-1"></div>
-          <div id="lpHint" class="soft mt-2 text-sm"></div>
-        </div>
-      </div>
+<div id="result" class="mt-5 hidden">
+  <div class="divider my-5"></div>
+
+  <div class="glass rounded-2xl p-6" style="background: rgba(255,255,255,0.65);">
+
+    <div class="text-sm soft">Your Life Path Number</div>
+    <div id="lpNumber" class="brandFont text-4xl font-extrabold mt-1"></div>
+    <div id="lpHint" class="soft mt-2 text-sm"></div>
+
+    <div class="divider my-5"></div>
+
+    <!-- Core Interpretation -->
+    <div>
+      <div class="brandFont text-lg font-bold mb-2">Core Pattern</div>
+      <p id="lpCore" class="soft text-sm"></p>
+    </div>
+
+    <div class="divider my-5"></div>
+
+    <!-- Shadow -->
+    <div>
+      <div class="brandFont text-lg font-bold mb-2">Shadow Pattern</div>
+      <p id="lpShadow" class="soft text-sm"></p>
+    </div>
+
+    <div class="divider my-5"></div>
+
+    <!-- Relationship Pattern -->
+    <div>
+      <div class="brandFont text-lg font-bold mb-2">Relationship Pattern</div>
+      <p id="lpLove" class="soft text-sm"></p>
+    </div>
+
+    <div class="divider my-6"></div>
+
+    <a class="btn btnPrimary block rounded-2xl px-5 py-4 font-semibold text-center" href="#lead">
+      Unlock Full Alignment Blueprint
+    </a>
+
+  </div>
+</div>
     </section>
 
     <!-- CREDIBILITY -->
@@ -506,6 +539,9 @@
       const box = document.getElementById("result");
       const numEl = document.getElementById("lpNumber");
       const hintEl = document.getElementById("lpHint");
+      const coreEl = document.getElementById("lpCore");
+      const shadowEl = document.getElementById("lpShadow");
+      const loveEl = document.getElementById("lpLove");
       /* Premium auto-format MM/DD/YYYY */
 dob.addEventListener("input", (e) => {
   let v = e.target.value.replace(/\D/g,"").slice(0,8);
@@ -548,6 +584,75 @@ dob.addEventListener("input", (e) => {
   const lp = reduce(sum);
 
   numEl.textContent = lp;
+
+  const interpretations = {
+  1: {
+  core: "You are wired to initiate. You move first. Independence fuels you.",
+  shadow: "You may reject help and isolate yourself when pressure rises.",
+  love: "You need admiration but not control. Respect keeps you loyal."
+  },
+  2: {
+  core: "You are emotionally intelligent and intuitive. Harmony matters deeply.",
+  shadow: "You can absorb other people’s moods and lose your own direction.",
+  love: "You bond deeply, but must avoid becoming emotionally dependent."
+  },
+  3: {
+  core: "Creative expression is your oxygen. You are socially magnetic.",
+  shadow: "Scattered focus can dilute your potential.",
+  love: "You thrive with partners who celebrate your creativity."
+  },
+  4: {
+  core: "You build foundations. Structure and discipline are your strengths.",
+  shadow: "Rigidity can block unexpected blessings.",
+  love: "You are loyal, but need flexibility to avoid emotional stagnation."
+  },
+  5: {
+  core: "Freedom and change drive you. You evolve through experience.",
+  shadow: "Impulsiveness can sabotage long term vision.",
+  love: "You need space inside connection."
+  },
+  6: {
+  core: "You are a natural nurturer. Responsibility feels instinctive.",
+  shadow: "Overgiving can drain your life force.",
+  love: "You build beautiful homes, but must avoid rescuing."
+  },
+  7: {
+  core: "You seek truth and wisdom. Depth over noise.",
+  shadow: "Isolation can become avoidance.",
+  love: "You need intellectual and spiritual connection."
+  },
+  8: {
+  core: "Power and execution energy. You are built for leadership.",
+  shadow: "Control tendencies can block emotional vulnerability.",
+  love: "Respect and ambition must align."
+  },
+  9: {
+  core: "You carry humanitarian energy. Big heart. Big vision.",
+  shadow: "Martyr patterns can appear.",
+  love: "You must love without self-sacrifice."
+  },
+  11: {
+  core: "Highly intuitive. You feel beyond the surface.",
+  shadow: "Nervous system overload is common.",
+  love: "You need emotional safety and spiritual alignment."
+  },
+  22: {
+  core: "Master builder energy. Vision into reality.",
+  shadow: "Pressure to perform can become self-censorship.",
+  love: "Partnership must support your mission."
+  },
+  33: {
+  core: "Master teacher frequency. You heal through presence.",
+  shadow: "You may overextend trying to save everyone.",
+  love: "You need reciprocity, not worship."
+  }
+  };
+  
+  if (interpretations[lp]) {
+  coreEl.textContent = interpretations[lp].core;
+  shadowEl.textContent = interpretations[lp].shadow;
+  loveEl.textContent = interpretations[lp].love;
+  }
 
   hintEl.textContent =
     (lp === 11 || lp === 22 || lp === 33)
