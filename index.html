@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Feel The Numbers · The Alignment Bulletin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black:   #080401;
+      --deep:    #0d0602;
+      --surface: #130a04;
+      --border:  rgba(240,165,0,0.15);
+      --border2: rgba(240,165,0,0.08);
+      --gold:    #f0a500;
+      --gold2:   #c97d1a;
+      --amber:   #d4914a;
+      --cream:   #e8cfa0;
+      --muted:   #9a7a52;
+      --dim:     #5a3e22;
+      --white:   #ffffff;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--black);
+      color: var(--cream);
+      font-family: 'EB Garamond', Georgia, serif;
+      font-size: 17px;
+      line-height: 1.7;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── STARFIELD ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      background-image:
+        radial-gradient(1px 1px at 10% 15%, rgba(240,165,0,0.6) 0%, transparent 100%),
+        radial-gradient(1px 1px at 25% 60%, rgba(240,165,0,0.4) 0%, transparent 100%),
+        radial-gradient(1px 1px at 42% 30%, rgba(255,255,255,0.5) 0%, transparent 100%),
+        radial-gradient(1px 1px at 60% 80%, rgba(240,165,0,0.5) 0%, transparent 100%),
+        radial-gradient(1px 1px at 75% 20%, rgba(255,255,255,0.4) 0%, transparent 100%),
+        radial-gradient(1px 1px at 88% 55%, rgba(240,165,0,0.6) 0%, transparent 100%),
+        radial-gradient(1px 1px at 18% 85%, rgba(255,255,255,0.3) 0%, transparent 100%),
+        radial-gradient(1px 1px at 50% 10%, rgba(240,165,0,0.5) 0%, transparent 100%),
+        radial-gradient(1px 1px at 93% 90%, rgba(255,255,255,0.4) 0%, transparent 100%),
+        radial-gradient(1.5px 1.5px at 33% 45%, rgba(240,165,0,0.7) 0%, transparent 100%),
+        radial-gradient(1px 1px at 67% 38%, rgba(255,255,255,0.35) 0%, transparent 100%),
+        radial-gradient(1px 1px at 80% 70%, rgba(240,165,0,0.45) 0%, transparent 100%);
+      pointer-events: none;
+    }
+
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      background:
+        radial-gradient(ellipse 60% 40% at 50% 0%, rgba(201,125,26,0.12) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 30% at 20% 100%, rgba(201,125,26,0.08) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    /* ── LAYOUT ── */
+    .wrap {
+      position: relative;
+      z-index: 1;
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 0 20px 120px;
+    }
+
+    /* ── TYPOGRAPHY ── */
+    .cinzel { font-family: 'Cinzel', Georgia, serif; }
+
+    /* ── COMPONENTS ── */
+    .card {
+      background: rgba(19,10,4,0.85);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 32px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      opacity: 0.5;
+    }
+
+    .card + .card { margin-top: 16px; }
+
+    .label {
+      font-family: 'Cinzel', Georgia, serif;
+      font-size: 10px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--gold2);
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    h1.page-title {
+      font-family: 'Cinzel', Georgia, serif;
+      font-size: clamp(28px, 7vw, 42px);
+      font-weight: 400;
+      color: var(--white);
+      line-height: 1.2;
+      letter-spacing: 0.5px;
+    }
+
+    h1.page-title em {
+      font-style: normal;
+      color: var(--gold);
+    }
+
+    h2.section-title {
+      font-family: 'Cinzel', Georgia, serif;
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--white);
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+    }
+
+    /* ── ORNAMENT ── */
+    .ornament {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 20px 0;
+    }
+    .ornament-line {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border));
+    }
+    .ornament-line.right { background: linear-gradient(90deg, var(--border), transparent); }
+
+    /* ── EQUATION DISPLAY ── */
+    .equation-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin: 24px 0;
+    }
+    .eq-block {
+      background: rgba(240,165,0,0.06);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      padding: 10px 16px;
+      text-align: center;
+    }
+    .eq-block .eq-label {
+      font-family: 'Cinzel', Georgia, serif;
+      font-size: 9px;
+      letter-spacing: 3px;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 4px;
+      display: block;
+    }
+    .eq-block .eq-val {
+      font-family: 'Cinzel', Georgia, serif;
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--gold);
+    }
+    .eq-op {
+      font-family: 'Cinzel', Georgia, serif;
+      font-size: 22px;
+      color: var(--dim);
+    }
+    .eq-equals {
+      font-family: 'Cinzel', Georgia, serif;
+      font-size: 22px;
+      color: var(--gold2);
+    }
+    .eq-result {
+      background: rgba(240,165,0,0.1);
+      border-color: rgba(240,165,0,0.35);
+    }
+    .eq-result .eq-val { color: var(--white); font-size: 22px; }
+
+    /* ── FIELD ── */
+    .field-wrap { margin-bottom: 16px; }
+    .field-label {
+      font-family: 'Cinzel', Georgia, serif;
+      font-size: 10px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 8px;
+      display: block;
+    }
+    input.field {
+      width: 100%;
+      padding: 14px 18px;
+      background: rgba(8,4,1,0.8);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      color: var(--cream);
+      font-family: 'Cinzel', Georgia, serif;
+      font-size: 18px;
+      letter-spacing: 3px;
+      outline: none;
+      transition: border-color .2s, box-shadow .2s;
+      text-align: center;
+    }
+    input.field::placeholder { color: var(--dim); font-size: 14px; letter-spacing: 2px; }
+    input.field:focus { border-color: rgba(240,165,0,0.4); box-shadow: 0 0 0 3px rgba(240,165,0,0.08); }
+    input.field.valid { border-color: rgba(240,165,0,0.5); }
+
+    /* ── BUTTONS ── */
+    .btn-gold {
+      display: block;
+      width: 100%;
+      padding: 16px 24px;
+      background: linear-gradient(135deg, var(--gold2), var(--gold));
+      border: none;
+      border-radius: 3px;
+      color: var(--black);
+      font-family: 'Cinzel', Georgia, serif;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      text-align: center;
+      cursor: pointer;
+      text-decoration: none;
+      transition: opacity .2s, transform .15s, box-shadow .2s;
+      box-shadow: 0 0 24px rgba(240,165,0,0.2);
+    }
+    .btn-gold:hover { opacity: .9; transform: translateY(-1px); box-shadow: 0 4px 30px rgba(240,165,0,0.3); }
+
+    .btn-outline {
+      display: block;
+      width: 100%;
+      padding: 14px 24px;
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      color: var(--cream);
+      font-family: 'Cinzel', Georgia, serif;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      text-align: center;
+      cursor: pointer;
+      text-decoration: none;
+      transition: border-color .2s, color .2s, background .2s;
+    }
+    .btn-outline:hover { border-color: var(--gold2); color: var(--gold); background: rgba(240,165,0,0.05); }
+
+    /* ── RESULT CARD ── */
+    #result { display: none; }
+    #result.visible { display: block; }
+
+    .lp-number {
+      font-family: 'Cinzel', Georgia, serif;
+      font-size: 72px;
+      font-weight: 700;
+      color: var(--gold);
+      line-height: 1;
+      text-shadow: 0 0 60px rgba(240,165,0,0.4);
+      text-align: center;
+      margin: 8px 0 4px;
+    }
+    .lp-label {
+      font-family: 'Cinzel', Georgia, serif;
+      font-size: 10px;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .interpret-block {
+      margin-top: 28px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border2);
+    }
+    .interpret-tag {
+      font-family: 'Cinzel', Georgia, serif;
+      font-size: 9px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--gold2);
+      margin-bottom: 8px;
+    }
+    .interpret-text {
+      font-size: 16px;
+      color: var(--cream);
+      line-height: 1.7;
+    }
+
+    /* ── SKOOL CTA ── */
+    .skool-card {
+      background: linear-gradient(135deg, rgba(25,14,4,0.95), rgba(19,10,4,0.95));
+      border: 1px solid rgba(240,165,0,0.35);
+      border-radius: 4px;
+      padding: 32px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .skool-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 60% 50% at 50% 0%, rgba(240,165,0,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .skool-price {
+      font-family: 'Cinzel', Georgia, serif;
+      font-size: 13px;
+      letter-spacing: 3px;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+    .skool-price span {
+      color: var(--gold);
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: 0;
+    }
+
+    /* ── STATS GRID ── */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: var(--border2);
+      border: 1px solid var(--border2);
+      border-radius: 3px;
+      overflow: hidden;
+      margin-top: 20px;
+    }
+    .stat-cell {
+      background: var(--deep);
+      padding: 16px 20px;
+    }
+    .stat-val {
+      font-family: 'Cinzel', Georgia, serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--gold);
+    }
+    .stat-label { font-size: 13px; color: var(--muted); margin-top: 2px; }
+
+    /* ── MUSIC LINKS ── */
+    .music-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    /* ── ACCORDION ── */
+    .accordion { border: 1px solid var(--border2); border-radius: 4px; overflow: hidden; }
+    .accordion + .accordion { margin-top: 12px; }
+    .accordion-header {
+      width: 100%;
+      background: rgba(19,10,4,0.9);
+      border: none;
+      padding: 22px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      text-align: left;
+      transition: background .2s;
+      position: relative;
+    }
+    .accordion-header::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border), transparent);
+    }
+    .accordion-header:hover { background: rgba(25,14,4,0.95); }
+    .accordion-title {
+      font-family: 'Cinzel', Georgia, serif;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--cream);
+      letter-spacing: 0.5px;
+    }
+    .accordion-arrow {
+      font-size: 18px;
+      color: var(--gold2);
+      transition: transform .3s;
+      flex-shrink: 0;
+    }
+    .accordion-arrow.open { transform: rotate(180deg); }
+    .accordion-body {
+      display: none;
+      padding: 24px 28px 28px;
+      background: rgba(13,6,2,0.8);
+      border-top: 1px solid var(--border2);
+    }
+    .accordion-body.open { display: block; }
+
+    /* ── MODAL ── */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      background: rgba(5,2,0,0.85);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      backdrop-filter: blur(4px);
+    }
+    .modal-overlay.open { display: flex; }
+    .modal {
+      width: min(560px, 100%);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+      position: relative;
+    }
+    .modal::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    }
+    .modal-inner { padding: 32px; }
+    .modal-close {
+      position: absolute;
+      top: 16px; right: 16px;
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      color: var(--muted);
+      font-family: 'Cinzel', Georgia, serif;
+      font-size: 11px;
+      letter-spacing: 2px;
+      padding: 6px 12px;
+      cursor: pointer;
+      transition: color .2s, border-color .2s;
+    }
+    .modal-close:hover { color: var(--cream); border-color: var(--gold2); }
+
+    input.modal-field {
+      width: 100%;
+      padding: 12px 16px;
+      background: rgba(8,4,1,0.9);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      color: var(--cream);
+      font-family: 'EB Garamond', Georgia, serif;
+      font-size: 16px;
+      outline: none;
+      transition: border-color .2s;
+      margin-top: 6px;
+    }
+    input.modal-field:focus { border-color: rgba(240,165,0,0.4); }
+    input.modal-field::placeholder { color: var(--dim); }
+
+    /* ── STICKY BAR ── */
+    .sticky-bar {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      z-index: 50;
+      background: rgba(8,4,1,0.95);
+      border-top: 1px solid var(--border);
+      padding: 10px 16px;
+      backdrop-filter: blur(12px);
+    }
+    .sticky-inner {
+      max-width: 640px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1.5fr;
+      gap: 8px;
+    }
+    .sticky-btn {
+      padding: 11px 8px;
+      border-radius: 3px;
+      font-family: 'Cinzel', Georgia, serif;
+      font-size: 9px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      text-align: center;
+      text-decoration: none;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      background: transparent;
+      transition: all .2s;
+    }
+    .sticky-btn:hover { color: var(--cream); border-color: var(--gold2); }
+    .sticky-btn.primary {
+      background: linear-gradient(135deg, var(--gold2), var(--gold));
+      color: var(--black);
+      border-color: transparent;
+      font-weight: 700;
+    }
+    .sticky-btn.primary:hover { opacity: .9; }
+
+    /* ── HEADER ── */
+    .site-header {
+      text-align: center;
+      padding: 48px 0 32px;
+    }
+
+    /* ── DIVIDER ── */
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border), transparent);
+      margin: 24px 0;
+    }
+
+    /* ── FOOTER ── */
+    .site-footer {
+      text-align: center;
+      font-family: 'Cinzel', Georgia, serif;
+      font-size: 10px;
+      letter-spacing: 3px;
+      color: var(--dim);
+      padding: 20px 0 8px;
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .fade-in { animation: fadeUp .5s ease both; }
+    .fade-in-1 { animation-delay: .1s; }
+    .fade-in-2 { animation-delay: .2s; }
+    .fade-in-3 { animation-delay: .35s; }
+
+    @keyframes glowPulse {
+      0%, 100% { text-shadow: 0 0 40px rgba(240,165,0,0.3); }
+      50% { text-shadow: 0 0 80px rgba(240,165,0,0.6); }
+    }
+    .lp-number { animation: glowPulse 3s ease-in-out infinite; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 500px) {
+      .card { padding: 22px 18px; }
+      .skool-card { padding: 24px 18px; }
+      .music-grid { grid-template-columns: 1fr; }
+      .modal-inner { padding: 24px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <!-- HEADER -->
+  <header class="site-header fade-in fade-in-1">
+    <span class="label" style="margin-bottom:16px;">The Alignment Bulletin</span>
+    <svg width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin: 0 auto 16px; display:block;">
+      <circle cx="22" cy="22" r="21" stroke="#f0a500" stroke-width="0.6" stroke-opacity="0.4"/>
+      <circle cx="22" cy="22" r="14" stroke="#f0a500" stroke-width="0.5" stroke-opacity="0.3"/>
+      <circle cx="22" cy="22" r="7" stroke="#f0a500" stroke-width="0.5" stroke-opacity="0.25"/>
+      <line x1="22" y1="1" x2="22" y2="43" stroke="#f0a500" stroke-width="0.5" stroke-opacity="0.3"/>
+      <line x1="1" y1="22" x2="43" y2="22" stroke="#f0a500" stroke-width="0.5" stroke-opacity="0.3"/>
+      <line x1="5.5" y1="5.5" x2="38.5" y2="38.5" stroke="#f0a500" stroke-width="0.4" stroke-opacity="0.2"/>
+      <line x1="38.5" y1="5.5" x2="5.5" y2="38.5" stroke="#f0a500" stroke-width="0.4" stroke-opacity="0.2"/>
+      <circle cx="22" cy="22" r="3" fill="#f0a500" fill-opacity="0.9"/>
+      <circle cx="22" cy="22" r="1.2" fill="#fff"/>
+    </svg>
+    <h1 class="page-title" style="font-size: clamp(30px,8vw,48px);">Feel The <em>Numbers</em></h1>
+    <p style="color: var(--muted); font-style: italic; margin-top: 10px; font-size: 16px;">Pattern awareness you can actually use.</p>
+  </header>
+
+  <!-- ── EQUATION VISUAL ── -->
+  <div class="card fade-in fade-in-2" style="margin-bottom:16px; text-align:center;">
+    <span class="label" style="text-align:center;">The Equation From The Live</span>
+    <p style="color: var(--muted); font-size: 14px; margin-bottom: 4px;">Month + Day + Year → reduce to single digit or master number</p>
+    <div class="equation-row">
+      <div class="eq-block">
+        <span class="eq-label">Month</span>
+        <span class="eq-val">MM</span>
+      </div>
+      <span class="eq-op">+</span>
+      <div class="eq-block">
+        <span class="eq-label">Day</span>
+        <span class="eq-val">DD</span>
+      </div>
+      <span class="eq-op">+</span>
+      <div class="eq-block">
+        <span class="eq-label">Year</span>
+        <span class="eq-val">YYYY</span>
+      </div>
+      <span class="eq-equals">→</span>
+      <div class="eq-block eq-result">
+        <span class="eq-label">Life Path</span>
+        <span class="eq-val">?</span>
+      </div>
+    </div>
+    <p style="color: var(--dim); font-family: 'Cinzel', serif; font-size: 10px; letter-spacing: 3px; text-transform: uppercase;">Reduce all digits · Keep 11, 22, 33 intact</p>
+  </div>
+
+  <!-- ── CALCULATOR ── -->
+  <section id="calculator" class="card fade-in fade-in-3" style="margin-bottom:16px;">
+    <span class="label">Life Path Calculator</span>
+    <h2 class="section-title" style="margin-bottom:4px;">Find Your Number</h2>
+    <p style="color: var(--muted); font-size: 15px; margin-bottom: 24px;">5 seconds. Enter your birthday.</p>
+
+    <div class="field-wrap">
+      <span class="field-label">Your Birthdate</span>
+      <input id="dob" type="text" inputmode="numeric" placeholder="MM / DD / YYYY" class="field" autocomplete="off"/>
+    </div>
+
+    <button id="calcBtn" class="btn-gold" type="button">Calculate My Life Path</button>
+  </section>
+
+  <!-- ── RESULT ── -->
+  <div id="result">
+    <div class="card" style="margin-bottom:16px; text-align:center;">
+      <span class="label" style="text-align:center;">Your Life Path Number</span>
+      <div class="lp-number" id="lpNumber"></div>
+      <div class="lp-label" id="lpHint"></div>
+
+      <div class="ornament" style="margin: 28px 0;">
+        <div class="ornament-line"></div>
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="8" stroke="#f0a500" stroke-width="0.6" stroke-opacity="0.4"/><circle cx="9" cy="9" r="3" fill="#f0a500" fill-opacity="0.8"/></svg>
+        <div class="ornament-line right"></div>
+      </div>
+
+      <div style="text-align:left;">
+        <div class="interpret-block" style="margin-top:0; padding-top:0; border-top:none;">
+          <div class="interpret-tag">Core Pattern</div>
+          <p class="interpret-text" id="lpCore"></p>
+        </div>
+        <div class="interpret-block">
+          <div class="interpret-tag">Shadow Pattern</div>
+          <p class="interpret-text" id="lpShadow"></p>
+        </div>
+        <div class="interpret-block">
+          <div class="interpret-tag">Relationship Pattern</div>
+          <p class="interpret-text" id="lpLove"></p>
+        </div>
+      </div>
+
+      <div class="divider" style="margin-top:28px;"></div>
+      <p style="color: var(--muted); font-size: 15px; font-style: italic; margin-bottom: 20px;">This is just the surface. The Circle goes much deeper.</p>
+      <a id="resultCircleBtn" class="btn-gold" href="https://www.skool.com/the-alignment-circle-7382/about?ref=b40f8737401e400c938d323de8ad6438" target="_blank" rel="noreferrer" style="margin-bottom:10px;">Join the Alignment Circle · $15/mo</a>
+      <button class="btn-outline" type="button" data-open-ebook="1">Get the Free Deeper Decode</button>
+    </div>
+  </div>
+
+  <!-- ── ALIGNMENT CIRCLE CTA ── -->
+  <div class="skool-card" style="margin-bottom:16px;" id="circle-cta">
+    <span class="label" style="text-align:center; display:block;">Private Community</span>
+    <h2 class="section-title" style="font-size:24px; text-align:center; margin-bottom:8px; color: var(--white);">The Alignment Circle</h2>
+    <p style="color: var(--muted); font-style: italic; text-align:center; margin-bottom:20px; font-size:15px;">Where the patterns actually connect.</p>
+
+    <div style="text-align: left; margin-bottom: 24px;">
+      <div style="display:flex; align-items:flex-start; gap:12px; margin-bottom:14px;">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="margin-top:3px; flex-shrink:0;"><circle cx="8" cy="8" r="7.25" stroke="#f0a500" stroke-width="0.7" stroke-opacity="0.5"/><circle cx="8" cy="8" r="2.5" fill="#f0a500"/></svg>
+        <p style="font-size:15px; color: var(--cream); margin:0;">Focused breakdowns beyond what fits in a live</p>
+      </div>
+      <div style="display:flex; align-items:flex-start; gap:12px; margin-bottom:14px;">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="margin-top:3px; flex-shrink:0;"><circle cx="8" cy="8" r="7.25" stroke="#f0a500" stroke-width="0.7" stroke-opacity="0.5"/><circle cx="8" cy="8" r="2.5" fill="#f0a500"/></svg>
+        <p style="font-size:15px; color: var(--cream); margin:0;">Priority selection for personal readings</p>
+      </div>
+      <div style="display:flex; align-items:flex-start; gap:12px; margin-bottom:14px;">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="margin-top:3px; flex-shrink:0;"><circle cx="8" cy="8" r="7.25" stroke="#f0a500" stroke-width="0.7" stroke-opacity="0.5"/><circle cx="8" cy="8" r="2.5" fill="#f0a500"/></svg>
+        <p style="font-size:15px; color: var(--cream); margin:0;">Monthly chance for a full personal decode</p>
+      </div>
+      <div style="display:flex; align-items:flex-start; gap:12px;">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="margin-top:3px; flex-shrink:0;"><circle cx="8" cy="8" r="7.25" stroke="#f0a500" stroke-width="0.7" stroke-opacity="0.5"/><circle cx="8" cy="8" r="2.5" fill="#f0a500"/></svg>
+        <p style="font-size:15px; color: var(--cream); margin:0;">Member-only patterns and deeper drops</p>
+      </div>
+    </div>
+
+    <div style="text-align:center; margin-bottom:20px;">
+      <div class="skool-price">Only <span>$15</span> / month</div>
+      <div style="font-size:13px; color: var(--dim); font-style:italic;">Cancel anytime</div>
+    </div>
+
+    <a class="btn-gold" href="https://www.skool.com/the-alignment-circle-7382/about?ref=b40f8737401e400c938d323de8ad6438" target="_blank" rel="noreferrer">Join the Circle Now</a>
+  </div>
+
+  <!-- ── EBOOK (ACCORDION) ── -->
+  <div class="accordion" style="margin-bottom:16px;">
+    <button class="accordion-header" data-accordion="ebook" type="button">
+      <div>
+        <div class="accordion-title">Free Numerology Starter Pack</div>
+        <div style="font-size:13px; color: var(--dim); margin-top:3px; font-family: 'EB Garamond', serif;">Drop your email · Get the deeper decode</div>
+      </div>
+      <span class="accordion-arrow" id="arrow-ebook">▾</span>
+    </button>
+    <div class="accordion-body" id="body-ebook">
+      <p style="color: var(--muted); font-size:15px; margin-bottom:20px;">Enter your email and date of birth. I'll send you a breakdown that goes beyond the calculator.</p>
+      <button class="btn-gold" type="button" data-open-ebook="1" style="margin-bottom:8px;">Get the Free Ebook</button>
+      <p style="font-size:12px; color: var(--dim); font-style:italic; text-align:center;">Check Promotions or Spam if you don't see it.</p>
+    </div>
+  </div>
+
+  <!-- ── CREDIBILITY (ACCORDION) ── -->
+  <div class="accordion" style="margin-bottom:16px;">
+    <button class="accordion-header" data-accordion="cred" type="button">
+      <div>
+        <div class="accordion-title">Why People Trust This</div>
+        <div style="font-size:13px; color: var(--dim); margin-top:3px; font-family: 'EB Garamond', serif;">Refined live, with real people, in real time</div>
+      </div>
+      <span class="accordion-arrow" id="arrow-cred">▾</span>
+    </button>
+    <div class="accordion-body" id="body-cred">
+      <div class="stats-grid">
+        <div class="stat-cell">
+          <div class="stat-val">100M+</div>
+          <div class="stat-label">Views across TikTok + IG</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-val">1M+</div>
+          <div class="stat-label">Community likes</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-val">187K</div>
+          <div class="stat-label">Instagram followers</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-val">70K+</div>
+          <div class="stat-label">TikTok community</div>
+        </div>
+      </div>
+      <div class="divider"></div>
+      <p style="font-size:15px; color: var(--muted); margin-bottom:14px;">For a long time, my own path felt slightly off because most calculators reduce Master Numbers too early. Once I aligned with my true Master Number purpose, things stopped feeling forced and started lining up naturally.</p>
+      <p style="font-size:15px; color: var(--muted); margin-bottom:16px;">This calculator exists so you don't miss that signal.</p>
+      <p style="font-family: 'Cinzel', serif; font-size:13px; color: var(--gold2);">— Hit James</p>
+    </div>
+  </div>
+
+  <!-- ── MUSIC (ACCORDION) ── -->
+  <div class="accordion" style="margin-bottom:16px;">
+    <button class="accordion-header" data-accordion="music" type="button">
+      <div>
+        <div class="accordion-title">Numerology Music</div>
+        <div style="font-size:13px; color: var(--dim); margin-top:3px; font-family: 'EB Garamond', serif;">Feel the message · Pick your platform</div>
+      </div>
+      <span class="accordion-arrow" id="arrow-music">▾</span>
+    </button>
+    <div class="accordion-body" id="body-music">
+      <div class="music-grid">
+        <a class="btn-outline" href="https://open.spotify.com/playlist/4nxP84zXmEryhBqOT01A3j" target="_blank" rel="noreferrer">Spotify</a>
+        <a class="btn-outline" href="https://music.apple.com/us/album/beginners-guide-to-the-universe-its-11-right-now-single/1854069647" target="_blank" rel="noreferrer">Apple Music</a>
+        <a class="btn-outline" href="https://tidal.com/album/473794673" target="_blank" rel="noreferrer">Tidal</a>
+      </div>
+      <a class="btn-gold" href="https://even.biz/r/galaxies-don-t-text-back" target="_blank" rel="noreferrer">Support with Alignment Music</a>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="ornament" style="margin-bottom:16px;">
+      <div class="ornament-line"></div>
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="#f0a500" stroke-width="0.5" stroke-opacity="0.4"/><circle cx="7" cy="7" r="2" fill="#f0a500" fill-opacity="0.6"/></svg>
+      <div class="ornament-line right"></div>
+    </div>
+    © <span id="year"></span> Feel The Numbers · The Alignment Bulletin
+  </footer>
+
+</div><!-- /wrap -->
+
+<!-- ── EBOOK MODAL ── -->
+<div id="ebookGate" class="modal-overlay" role="dialog" aria-modal="true">
+  <div class="modal">
+    <div class="modal-inner">
+      <button id="closeEbookGate" class="modal-close" type="button">Close</button>
+      <span class="label" style="display:block; margin-bottom:8px;">Free Resource</span>
+      <h2 class="section-title" style="margin-bottom:6px;">Numerology Starter Pack</h2>
+      <p style="color: var(--muted); font-size:15px; margin-bottom:24px;">Drop your email and date of birth. I'll send the download link.</p>
+      <div class="divider"></div>
+      <form id="mcEbookForm" style="margin-top:20px;" method="post" target="_blank" novalidate
+        action="https://gmail.us12.list-manage.com/subscribe/post?u=3bc7d3b13b035ca3f0438b285&id=afeae60d1f&f_id=0029e2e3f0">
+
+        <div style="margin-bottom:16px;">
+          <label class="field-label" style="text-align:left; display:block; font-size:9px;">Email Address</label>
+          <input class="modal-field" type="email" name="EMAIL" placeholder="you@email.com" required/>
+        </div>
+        <div style="margin-bottom:20px;">
+          <label class="field-label" style="text-align:left; display:block; font-size:9px;">Life Path / Master Number (optional)</label>
+          <input class="modal-field" type="text" name="FNAME" placeholder="Example: 11, 22, 7…"/>
+        </div>
+
+        <input type="hidden" name="SOURCE" value="EBOOK_STARTER_PACK"/>
+        <input type="hidden" name="ASSET" value="numerology-starter-pack"/>
+        <div aria-hidden="true" style="position:absolute; left:-5000px;">
+          <input type="text" name="b_3bc7d3b13b035ca3f0438b285_afeae60d1f" tabindex="-1" value="">
+        </div>
+        <button type="submit" class="btn-gold">Send Me the Download Link</button>
+        <p style="font-size:12px; color: var(--dim); font-style:italic; text-align:center; margin-top:12px;">Check Promotions or Spam if you don't see it.</p>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- ── STICKY BAR ── -->
+<div class="sticky-bar">
+  <div class="sticky-inner">
+    <a class="sticky-btn" href="#calculator">Calculator</a>
+    <button class="sticky-btn" type="button" data-open-ebook="1">Free Ebook</button>
+    <a class="sticky-btn primary" href="https://www.skool.com/the-alignment-circle-7382/about?ref=b40f8737401e400c938d323de8ad6438" target="_blank" rel="noreferrer">Join the Circle</a>
+  </div>
+</div>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // ── CALCULATOR ──
+  (function(){
+    const dob = document.getElementById('dob');
+    const btn = document.getElementById('calcBtn');
+    const result = document.getElementById('result');
+    const numEl = document.getElementById('lpNumber');
+    const hintEl = document.getElementById('lpHint');
+    const coreEl = document.getElementById('lpCore');
+    const shadowEl = document.getElementById('lpShadow');
+    const loveEl = document.getElementById('lpLove');
+
+    dob.addEventListener('input', (e) => {
+      let v = e.target.value.replace(/\D/g,'').slice(0,8);
+      if (v.length >= 5) v = v.slice(0,2)+'/'+v.slice(2,4)+'/'+v.slice(4);
+      else if (v.length >= 3) v = v.slice(0,2)+'/'+v.slice(2);
+      e.target.value = v;
+      dob.classList.toggle('valid', v.length === 10);
+    });
+
+    dob.addEventListener('keydown', (e) => { if (e.key === 'Enter') btn.click(); });
+
+    function reduce(n){
+      while (n > 9 && n !== 11 && n !== 22 && n !== 33){
+        n = String(n).split('').reduce((a,c)=>a+Number(c),0);
+      }
+      return n;
+    }
+
+    const data = {
+      1:  { core:'You are wired to initiate. You move first. Independence fuels you.', shadow:'You may reject help and isolate yourself when pressure rises.', love:'You need admiration but not control. Respect keeps you loyal.' },
+      2:  { core:'You are emotionally intelligent and intuitive. Harmony matters deeply.', shadow:'You can absorb other people\'s moods and lose your own direction.', love:'You bond deeply, but must avoid becoming emotionally dependent.' },
+      3:  { core:'Creative expression is your oxygen. You are socially magnetic.', shadow:'Scattered focus can dilute your potential.', love:'You thrive with partners who celebrate your creativity.' },
+      4:  { core:'You build foundations. Structure and discipline are your strengths.', shadow:'Rigidity can block unexpected blessings.', love:'You are loyal, but need flexibility to avoid emotional stagnation.' },
+      5:  { core:'Freedom and change drive you. You evolve through experience.', shadow:'Impulsiveness can sabotage long term vision.', love:'You need space inside connection.' },
+      6:  { core:'You are a natural nurturer. Responsibility feels instinctive.', shadow:'Overgiving can drain your life force.', love:'You build beautiful homes, but must avoid rescuing.' },
+      7:  { core:'You seek truth and wisdom. Depth over noise.', shadow:'Isolation can become avoidance.', love:'You need intellectual and spiritual connection.' },
+      8:  { core:'Power and execution energy. You are built for leadership.', shadow:'Control tendencies can block emotional vulnerability.', love:'Respect and ambition must align.' },
+      9:  { core:'You carry humanitarian energy. Big heart. Big vision.', shadow:'Martyr patterns can appear.', love:'You must love without self-sacrifice.' },
+      11: { core:'Highly intuitive. You feel beyond the surface.', shadow:'Nervous system overload is common.', love:'You need emotional safety and spiritual alignment.' },
+      22: { core:'Master builder energy. Vision into reality.', shadow:'Pressure to perform can become self-censorship.', love:'Partnership must support your mission.' },
+      33: { core:'Master teacher frequency. You heal through presence.', shadow:'You may overextend trying to save everyone.', love:'You need reciprocity, not worship.' }
+    };
+
+    btn.addEventListener('click', () => {
+      const cleaned = dob.value.replace(/\D/g,'');
+      if (cleaned.length !== 8) { dob.focus(); dob.classList.add('valid'); setTimeout(()=>dob.classList.remove('valid'),600); return; }
+
+      const m = cleaned.slice(0,2);
+      const d = cleaned.slice(2,4);
+      const y = cleaned.slice(4,8);
+      const sum = (m+d+y).split('').reduce((a,c)=>a+Number(c),0);
+      const lp = reduce(sum);
+
+      numEl.textContent = lp;
+      hintEl.textContent = (lp===11||lp===22||lp===33) ? 'Master number · High potential, higher responsibility.' : 'Core life rhythm · The patterns you keep returning to.';
+
+      if (data[lp]) {
+        coreEl.textContent = data[lp].core;
+        shadowEl.textContent = data[lp].shadow;
+        loveEl.textContent = data[lp].love;
+      }
+
+      result.classList.add('visible');
+      result.style.animation = 'fadeUp .5s ease both';
+
+      // scroll to result
+      setTimeout(()=> result.scrollIntoView({ behavior:'smooth', block:'start' }), 100);
+
+      // hide circle CTA since it's shown in result
+      document.getElementById('circle-cta').style.display = 'none';
+    });
+  })();
+
+  // ── MODAL ──
+  (function(){
+    const overlay = document.getElementById('ebookGate');
+    const close = document.getElementById('closeEbookGate');
+    const openers = document.querySelectorAll('[data-open-ebook="1"]');
+    const open = () => overlay.classList.add('open');
+    const closeModal = () => overlay.classList.remove('open');
+    openers.forEach(el => el.addEventListener('click', (e) => { e.preventDefault(); open(); }));
+    close.addEventListener('click', closeModal);
+    overlay.addEventListener('click', (e) => { if (e.target === overlay) closeModal(); });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+  })();
+
+  // ── ACCORDIONS ──
+  document.querySelectorAll('[data-accordion]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const key = btn.dataset.accordion;
+      const body = document.getElementById('body-' + key);
+      const arrow = document.getElementById('arrow-' + key);
+      const isOpen = body.classList.contains('open');
+      body.classList.toggle('open', !isOpen);
+      arrow.classList.toggle('open', !isOpen);
+    });
+  });
+</script>
+</body>
+</html>
